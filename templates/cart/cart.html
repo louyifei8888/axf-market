@@ -1,0 +1,144 @@
+{% extends 'base_main.html' %}
+
+{% load static %}
+
+{% block extCSS %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'app01/cart/cart.css' %}">
+{% endblock %}
+{% block extJS %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "app01/cart/cart.js" %}"></script>
+{% endblock %}
+
+{% block title %}
+    购物车
+{% endblock %}
+
+
+{% block content %}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">收货信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group has-feedback">
+                        <label for="exampleInputEmail1">收货人:</label>
+                        <input type="text" class="form-control" id="u_name" placeholder="请输入收货人">
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="exampleInputPassword1">联系电话:</label>
+                        <input type="text" class="form-control" id="call_phone" placeholder="请输入您的联系电话">
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="exampleInputPassword1">配送地址:</label>
+                        <input type="text" class="form-control" id="address"
+                               placeholder="请输入您的地址">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="submit" data-dismiss="modal">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cart">
+        <h3><b>购物车</b></h3>
+        <section class="full">
+            <section>
+                <ul>
+                    <li>
+                        <div class="clear">
+                            <p class="infoJustify">收货人:</p>
+                            <p><span id="get_name">{{ receivers.r_name }}</span></p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="clear">
+                            <p class="infoJustify">电话:</p>
+                            <p><span id="get_call_phone">{{ receivers.r_call_phone }}</span><a href="" class="change btn btn-primary btn-md" role="button"
+                                                  data-toggle="modal" data-target="#myModal">修改&gt;</a></p>
+
+                        </div>
+                    </li>
+                    <li>
+                        <div class="clear">
+                            <p class="infoJustify">收货地址:</p>
+                            <p><span id="get_address">{{ receivers.r_address }}</span></p>
+                        </div>
+                    </li>
+                </ul>
+                <section class="bill">
+                    <p>闪送超市</p>
+                    <p>69元起送,22:00前下订单,明日可达</p>
+                    <a>凑单专区</a>
+                </section>
+                <section class="delivery">
+                    <span>收货时间:</span>
+                    <span>一小时到达</span>
+                    <a href="">选择您的收货时间</a>
+                </section>
+                <section class="delivery">
+                    <span>收货备注:</span>
+                    <input type="text" placeholder="可输入100字以内的特殊要求">
+                </section>
+            </section>
+        </section>
+        <menu>
+            <ul>
+                {% for cart in carts %}
+                    <li class="menuList" c_good_id="{{ cart.c_goods_id }}">
+                        <div class="confirm">
+                            <span class="select" select="{{ cart.c_isselect }}">
+                                {% if cart.c_isselect %}
+                                    <span>√</span>
+                                {% else %}
+                                    <span></span>
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <a href="#">
+                            <img src="{{ cart.c_goods.productimg }}">
+                            <p>{{ cart.c_goods.productlongname }}</p>
+                        </a>
+                        <section>
+                            <button class="sub_cart_num">-</button>
+                            <span>{{ cart.c_num }}</span>
+                            <button class="add_cart_num">+</button>
+                        </section>
+                    </li>
+                {% endfor %}
+
+
+                <li class="payTheBill">
+                    <div class="confirm">
+                                <span id="allSelectButton">
+                                    {% if all_select %}
+                                        <span>√</span>
+                                    {% else %}
+                                        <span></span>
+                                    {% endif %}
+                                </span>
+                    </div>
+
+                    <p>
+                        <span>全选</span>
+                        <span id="sum_count">共计:{{ sum_count }} 件</span>
+                        <span id="sum_price">总价:¥{{ sum_price }}</span>
+                    </p>
+                    <a role="button" class="btn btn-primary" href="{% url 'axf:create_order' %}">选好了</a>
+                </li>
+            </ul>
+        </menu>
+    </div>
+{% endblock %}
+
+
+
+

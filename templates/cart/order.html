@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <b class="col-xm-4 col-xm-offset-4">订单</b>
+            <h6>订单编号:{{ order_number }}</h6>
+        </div>
+        <div class="row">
+            <table class="table table-strip table-hover table-border">
+                <thead>
+                <th>
+                <td>商品名</td>
+                <td>图片</td>
+                <td>数量</td>
+                </th>
+                </thead>
+                <tbody>
+                {% for order_and_good in order_and_goods %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ order_and_good.og_goods.productlongname }}</td>
+                        <td><img width="50px" height="50px" src="{{ order_and_good.og_goods.productimg }}"></td>
+                        <td>{{ order_and_good.og_count }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <div class="row">
+            <a href="/axf/submit_order/?order_number={{ order_number }}" class="btn btn-default" role="button">提交订单</a>
+            <a href="" class="btn btn-default" role="button">取消订单</a>
+        </div>
+    </div>
+
+{% endblock %}
+
